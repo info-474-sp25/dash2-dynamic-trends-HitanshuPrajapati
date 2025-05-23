@@ -67,11 +67,13 @@ d3.csv("weather.csv").then(data => {
     average_precipitation_line_plot.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(xScale))
+        .selectAll("path,line")
         .style("stroke", "black")
         .style("fill", "none");
 
     average_precipitation_line_plot.append("g")
         .call(d3.axisLeft(yScale))
+        .selectAll("path,line")
         .style("stroke", "black")
         .style("fill", "none");
 
