@@ -48,6 +48,19 @@ d3.csv("weather.csv").then(data => {
         .domain([...cityGroups.keys()]);
 
     // 4.a: PLOT DATA FOR CHART 1
+    const line = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScale(d.average_precipitation));
+
+    average_precipitation_line_plot.selectAll(".line")
+        .data(cityGroups)
+        .enter()
+        .append("path")
+        .attr("class", "line")
+        .attr("d", ([, values]) => line(values))
+        .attr("fill", "none")
+        .attr("stroke", ([city]) => colorScale(city))
+        .attr("stroke-width", 2);
 
 
     // 5.a: ADD AXES FOR CHART 1
