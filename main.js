@@ -25,7 +25,7 @@ const svg2_RENAME = d3.select("#lineChart2")
 d3.csv("weather.csv").then(data => {
     
     // 2.b: ... AND TRANSFORM DATA
-    
+
     // Turn date strings into Date objects and precipitation values to numbers
     data.forEach(d => {
         d.date = d3.timeParse("%m/%d/%Y")(d.date);
@@ -64,25 +64,26 @@ d3.csv("weather.csv").then(data => {
 
 
     // 5.a: ADD AXES FOR CHART 1
-    average_precipitation_line_plot.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(xScale));
+    const formatMonthYear = d3.timeFormat("%b %Y");
 
-    
-    const formatDate = d3.timeFormat("%b %Y");
     average_precipitation_line_plot.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(xScale).tickFormat(formatDate));
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(xScale).tickFormat(formatMonthYear));
+
+
+    average_precipitation_line_plot.append("g")
+        .call(d3.axisLeft(yScale));
 
 
     // 6.a: ADD LABELS FOR CHART 1
-    average_precipitation_line_plot.append("text")
+    svg1_RENAME.append("text")
         .attr("x", width / 2)
         .attr("y", height + 40)
         .attr("text-anchor", "middle")
         .text("Date");
 
-    average_precipitation_line_plot.append("text")
+    svg1_RENAME.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
         .attr("y", -50)
