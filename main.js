@@ -77,18 +77,18 @@ d3.csv("weather.csv").then(data => {
 
 
     // 6.a: ADD LABELS FOR CHART 1
-    svg1_RENAME.append("text")
+    average_precipitation_line_plot.append("text")
         .attr("x", width / 2)
         .attr("y", height + 40)
         .attr("text-anchor", "middle")
         .text("Date");
 
-    svg1_RENAME.append("text")
+    average_precipitation_line_plot.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
         .attr("y", -50)
         .attr("text-anchor", "middle")
-        .text("Avg Precipitation (in)");
+        .text("Avg Precipitation (inches / hr)");
 
 
     // 7.a: ADD INTERACTIVITY FOR CHART 1
