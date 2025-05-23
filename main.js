@@ -95,6 +95,28 @@ d3.csv("weather.csv").then(data => {
         .text("Avg Precipitation (inches / hr)");
 
     // 7.a: ADD STATIC LEGEND (TEMPORARY UNTIL INTERACTIVITY IS ADDED)
+    const legend = average_precipitation_line_plot.selectAll(".legend")
+        .data([...cityGroups.keys()])
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", (d, i) => `translate(${i * 120 + 50}, ${-40})`);  // i * spacing, y = below chart
+
+    legend.append("rect")
+        .attr("x", 0)
+        .attr("width", 12)
+        .attr("height", 12)
+        .style("fill", d => colorScale(d));
+
+    legend.append("text")
+        .attr("x", 18)  // spacing between rect and text
+        .attr("y", 6)  // center vertically with rect
+        .attr("dy", "0.35em")
+        .style("text-anchor", "start")
+        .style("font-size", "12px")
+        .text(d => d);
+
+
 
 
     // 8.a: ADD INTERACTIVITY FOR CHART 1
