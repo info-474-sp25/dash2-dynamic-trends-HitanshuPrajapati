@@ -36,7 +36,16 @@ d3.csv("weather.csv").then(data => {
     const cityGroups = d3.group(data, d => d.city);
 
     // 3.a: SET SCALES FOR CHART 1
+    const xScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.date))
+        .range([0, width]);
 
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.average_precipitation)])
+        .range([height, 0]);
+
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+        .domain([...cityGroups.keys()]);
 
     // 4.a: PLOT DATA FOR CHART 1
 
