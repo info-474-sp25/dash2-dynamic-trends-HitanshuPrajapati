@@ -79,7 +79,7 @@ d3.csv("weather.csv").then(data => {
     // 6.a: ADD LABELS FOR CHART 1
     average_precipitation_line_plot.append("text")
         .attr("x", width / 2)
-        .attr("y", height + 40)
+        .attr("y", height + 50)
         .attr("text-anchor", "middle")
         .style("fill", "black")
         .style("font-size", "14px")
@@ -94,8 +94,10 @@ d3.csv("weather.csv").then(data => {
         .style("font-size", "14px")
         .text("Avg Precipitation (inches / hr)");
 
+    // 7.a: ADD STATIC LEGEND (TEMPORARY UNTIL INTERACTIVITY IS ADDED)
 
-    // 7.a: ADD INTERACTIVITY FOR CHART 1
+
+    // 8.a: ADD INTERACTIVITY FOR CHART 1
     
 
     // ==========================================
