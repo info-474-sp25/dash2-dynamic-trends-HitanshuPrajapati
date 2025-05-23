@@ -81,6 +81,8 @@ d3.csv("weather.csv").then(data => {
         .attr("x", width / 2)
         .attr("y", height + 40)
         .attr("text-anchor", "middle")
+        .style("fill", "black")
+        .style("font-size", "14px")
         .text("Date");
 
     average_precipitation_line_plot.append("text")
@@ -88,6 +90,8 @@ d3.csv("weather.csv").then(data => {
         .attr("x", -height / 2)
         .attr("y", -50)
         .attr("text-anchor", "middle")
+        .style("fill", "black")
+        .style("font-size", "14px")
         .text("Avg Precipitation (inches / hr)");
 
 
