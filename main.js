@@ -68,11 +68,26 @@ d3.csv("weather.csv").then(data => {
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(xScale));
 
+    
+    const formatDate = d3.timeFormat("%b %Y");
     average_precipitation_line_plot.append("g")
-        .call(d3.axisLeft(yScale));
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(xScale).tickFormat(formatDate));
 
 
     // 6.a: ADD LABELS FOR CHART 1
+    average_precipitation_line_plot.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + 40)
+        .attr("text-anchor", "middle")
+        .text("Date");
+
+    average_precipitation_line_plot.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -50)
+        .attr("text-anchor", "middle")
+        .text("Avg Precipitation (in)");
 
 
     // 7.a: ADD INTERACTIVITY FOR CHART 1
