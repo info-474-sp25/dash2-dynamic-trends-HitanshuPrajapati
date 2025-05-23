@@ -66,10 +66,15 @@ d3.csv("weather.csv").then(data => {
     // 5.a: ADD AXES FOR CHART 1
     average_precipitation_line_plot.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale))
+        .style("stroke", "black")
+        .style("fill", "none");
 
     average_precipitation_line_plot.append("g")
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale))
+        .style("stroke", "black")
+        .style("fill", "none");
+
 
     // 6.a: ADD LABELS FOR CHART 1
 
