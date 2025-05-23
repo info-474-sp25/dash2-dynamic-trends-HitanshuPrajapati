@@ -4,7 +4,7 @@ const width = 900 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
 // Create SVG containers for both charts
-const svg1_RENAME = d3.select("#lineChart1") // If you change this ID, you must change it in index.html too
+const average_precipitation_line_plot = d3.select("#lineChart1") // If you change this ID, you must change it in index.html too
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -23,7 +23,17 @@ const svg2_RENAME = d3.select("#lineChart2")
 
 // 2.a: LOAD...
 d3.csv("weather.csv").then(data => {
+    
     // 2.b: ... AND TRANSFORM DATA
+    
+    // Turn date strings into Date objects and precipitation values to numbers
+    data.forEach(d => {
+        d.date = d3.timeParse("%m/%d/%Y")(d.date);
+        d.average_precipitation = +d.average_precipitation;
+    });
+
+    // Group data by city
+    const cityGroups = d3.group(data, d => d.city);
 
     // 3.a: SET SCALES FOR CHART 1
 
