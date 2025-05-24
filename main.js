@@ -116,29 +116,85 @@ d3.csv("weather.csv").then(data => {
         .style("font-size", "12px")
         .text(d => d);
 
-
-
-
     // 8.a: ADD INTERACTIVITY FOR CHART 1
-    
 
     // ==========================================
-    //         CHART 2 (if applicable)
+    //                 CHART 2
     // ==========================================
+
+    const phoenixData = data.filter(d => d.city === "Phoenix");
+
+    const monthlyAVG = d3.groups(phoenixData, d => d.date.getMonth() + 1)
+    .map(([month, values]) => ({
+        month: +month,
+        avgTemp: d3.mean(values, d => d.actual_mean_temp)
+    }));
+
+    monthlyAVG.forEach(d => {
+    d.adjustedMonth = (d.month + 5) % 12;
+    });
+
+    monthlyAVG.sort((a, b) => a.adjustedMonth - b.adjustedMonth);
 
     // 3.b: SET SCALES FOR CHART 2
+    const xScale2 = d3.scaleLinear()
+        .domain([0, 11])
+        .range([0, width]);
 
-
+    const yScale2 = d3.scaleLinear()
+    .domain([
+        d3.min(monthlyAVG, d => d.avgTemp) * 0.95,
+        d3.max(monthlyAVG, d => d.avgTemp) * 1.05
+    ])
+        .range([height, 0]);
+    
     // 4.b: PLOT DATA FOR CHART 2
+    const line2 = d3.line()
+        .x(d => xScale2(d.adjustedMonth))
+        .y(d => yScale2(d.avgTemp));
 
+    avg_temp_line_plot.append("path")
+        .datum(monthlyAVG)
+        .attr("class", "line")
+        .attr("d", line2)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2);
 
-    // 5.b: ADD AXES FOR CHART 
+    // 5.b: ADD AXES FOR CHART 2
+    const months_2014_2015 = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 
+    const xAxis2 = d3.axisBottom(xScale2)
+        .ticks(12)
+        .tickFormat(d => months_2014_2015[d]);
+
+    avg_temp_line_plot.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(xAxis2);
+
+    avg_temp_line_plot.append("g")
+        .attr("class", "y-axis")
+        .call(d3.axisLeft(yScale2));
 
     // 6.b: ADD LABELS FOR CHART 2
+    avg_temp_line_plot.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + 50)
+        .attr("text-anchor", "middle")
+        .style("fill", "black")
+        .style("font-size", "14px")
+        .text("Months (2014-2015)");
 
+    avg_temp_line_plot.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -50)
+        .attr("text-anchor", "middle")
+        .style("fill", "black")
+        .style("font-size", "14px")
+        .text("Avg Actual Mean Temp (°F)");
 
-    // 7.b: ADD INTERACTIVITY FOR CHART 2
-
-
+    // 7.b: (Optional) ADD INTERACTIVITY FOR CHART 2
+    // (Add any tooltip or interactivity code here if desired.)
 });
