@@ -11,7 +11,7 @@ const average_precipitation_line_plot = d3.select("#lineChart1") // If you chang
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-const svg2_RENAME = d3.select("#lineChart2")
+const avg_temp_line_plot = d3.select("#lineChart2")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
