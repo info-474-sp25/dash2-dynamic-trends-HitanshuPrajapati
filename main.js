@@ -18,9 +18,6 @@ const avg_temp_line_plot = d3.select("#lineChart2")
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-// (If applicable) Tooltip element for interactivity
-// const tooltip = ...
-
 // 2.a: LOAD...
 d3.csv("weather.csv").then(data => {
     
@@ -94,29 +91,78 @@ d3.csv("weather.csv").then(data => {
         .style("font-size", "14px")
         .text("Avg Precipitation (inches / hr)");
 
-    // 7.a: ADD STATIC LEGEND (TEMPORARY UNTIL INTERACTIVITY IS ADDED)
-    const legend = average_precipitation_line_plot.selectAll(".legend")
-        .data([...cityGroups.keys()])
-        .enter()
-        .append("g")
-        .attr("class", "legend")
-        .attr("transform", (d, i) => `translate(${i * 120 + 50}, ${-40})`);  // i * spacing, y = below chart
-
-    legend.append("rect")
-        .attr("x", 0)
-        .attr("width", 12)
-        .attr("height", 12)
-        .style("fill", d => colorScale(d));
-
-    legend.append("text")
-        .attr("x", 18)  // spacing between rect and text
-        .attr("y", 6)  // center vertically with rect
-        .attr("dy", "0.35em")
-        .style("text-anchor", "start")
-        .style("font-size", "12px")
-        .text(d => d);
-
     // 8.a: ADD INTERACTIVITY FOR CHART 1
+
+    // Create Checkboxes
+    const checkboxContainer = d3.select("#city-checkboxes");
+    const allCities = [...cityGroups.keys()];
+
+    allCities.forEach(city => {
+        const label = checkboxContainer.append("label").style("margin-right", "10px");
+        label.append("input")
+            .attr("type", "checkbox")
+            .attr("checked", true)
+            .attr("value", city)
+            .on("change", updateChart);
+        label.append("span").text(city);
+    });
+
+    // Tooltip
+    const tooltip = d3.select("body").append("div")
+        .style("position", "absolute")
+        .style("padding", "6px")
+        .style("background", "#eee")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "4px")
+        .style("pointer-events", "none")
+        .style("opacity", 0);
+
+    // Chart Update Function
+    function updateChart() {
+        const checkedCities = [];
+        d3.selectAll("#city-checkboxes input").each(function() {
+            if (this.checked) checkedCities.push(this.value);
+        });
+
+        // Show all if none or all selected
+        const citiesToShow = (checkedCities.length === 0 || checkedCities.length === allCities.length)
+            ? allCities
+            : checkedCities;
+
+        const filteredData = [...cityGroups.entries()].filter(([city]) => citiesToShow.includes(city));
+
+        const lines = average_precipitation_line_plot.selectAll(".line")
+            .data(filteredData, d => d[0]);
+
+        lines.join(
+            enter => enter.append("path")
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", ([city]) => colorScale(city))
+                .attr("stroke-width", 2)
+                .attr("d", ([, values]) => line(values))
+                .on("mouseover", function (event, [city]) {
+                    d3.select(this).attr("stroke-width", 4);
+                    tooltip.style("opacity", 1).html(`City: <strong>${city}</strong>`);
+                })
+                .on("mousemove", function (event) {
+                    tooltip
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 20) + "px");
+                })
+                .on("mouseout", function () {
+                    d3.select(this).attr("stroke-width", 2);
+                    tooltip.style("opacity", 0);
+                }),
+            update => update
+                .attr("stroke", ([city]) => colorScale(city))
+                .attr("d", ([, values]) => line(values)),
+            exit => exit.remove()
+        );
+    }
+
+    updateChart();
+    
 
     // ==========================================
     //                 CHART 2
