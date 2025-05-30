@@ -163,9 +163,9 @@ d3.csv("weather.csv").then(data => {
 	//                 CHART 2
 	// ==========================================
 	
-	const phoenixData = data.filter(d => d.city === "Phoenix");
+	const indianapolisData = data.filter(d => d.city === "Indianapolis");
 	
-	const monthlyAVG = d3.groups(phoenixData, d => d.date.getMonth() + 1)
+	const monthlyAVG = d3.groups(indianapolisData, d => d.date.getMonth() + 1)
 		.map(([month, values]) => ({
 			month: +month,
 			avgTemp: d3.mean(values, d => d.actual_mean_temp)
