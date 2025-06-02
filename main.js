@@ -234,7 +234,7 @@ d3.csv("weather.csv").then(data => {
 		.attr("text-anchor", "middle")
 		.style("fill", "black")
 		.style("font-size", "14px")
-		.text("Avg Actual Mean Temp (°F)");
+		.text("Temperature (°F)");
 	
     // 7.b: (Optional) ADD INTERACTIVITY FOR CHART 2
     // (Add any tooltip or interactivity code here if desired.) });
