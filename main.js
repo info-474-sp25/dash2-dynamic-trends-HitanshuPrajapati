@@ -254,7 +254,7 @@ d3.csv("weather.csv").then(data => {
 		d3.selectAll(".chart-container")
 			.filter(function(d, i) { return i === 1; })
 			.select("h2")
-			.text(`Average Actual Mean Temperature Over Time in ${selectedCity}`);
+			.text(`Monthly Mean Temperature Over Time in ${selectedCity}`);
 		
 		const cityData = data.filter(d => d.city === selectedCity);
 		
